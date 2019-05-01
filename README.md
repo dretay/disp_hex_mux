@@ -5,11 +5,11 @@
 Verilog-based project that exposes a 6-digit seven segment display that can be addressed over a spi bus. Board design available [here](https://circuitmaker.com/Projects/Details/Andrew-Tayman/MC74ACT14-Seven-Segment)
 
 ### Main Features ###
-
+![](IMG_3861.JPG)
 - Charlieplex'd 6 digit display for efficient pin use. 
 - Each segment individually addressable. For example, here is how to setup a buspirate and use it to display abc123:
 
-`
+```
 HiZ>m
 1. HiZ
 2. 1-WIRE
@@ -56,4 +56,4 @@ Select output type:
 (1)>2
 
 SPI>[0x01 0x0a 0x02 0x0b 0x03 0x0c 0x04 0x01 0x05 0x02 0x06 0x03]
-`
+```

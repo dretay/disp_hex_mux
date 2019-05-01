@@ -1,0 +1,28 @@
+set_io CLK_12_MHZ 21 
+
+set_io -pullup yes an[0] 119 #0
+set_io -pullup yes an[1] 118 #1
+set_io -pullup yes an[2] 117 #2
+set_io -pullup yes an[3] 116 #3
+set_io -pullup yes an[4] 115 #4
+set_io -pullup yes an[5] 114 #5
+
+set_io -pullup yes sseg[0] 80  #A
+set_io -pullup yes sseg[1] 113 #B
+set_io -pullup yes sseg[2] 91  #C
+set_io -pullup yes sseg[3] 79  #D
+set_io -pullup yes sseg[4] 88  #E
+set_io -pullup yes sseg[5] 90  #F
+set_io -pullup yes sseg[6] 81  #G
+set_io -pullup yes sseg[7] 112 #DP
+
+set_io miso 44
+set_io ssel 45
+set_io mosi 47
+set_io sck 48
+
+set_io leds[4] 95 
+set_io leds[3] 96
+set_io leds[2] 97
+set_io leds[1] 98
+set_io leds[0] 99

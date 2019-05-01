@@ -14,17 +14,9 @@ module disp_hex_mux
 		output reg [4:0] leds,
 	);
 
-//constant declaration
+// ------ Design implementation ------
 
-reg [3:0] hex_in;
-reg dp;
-wire [3:0] hex5;
-wire [3:0] hex4;
-wire [3:0] hex3;
-wire [3:0] hex2;
-wire [3:0] hex1;
-wire [3:0] hex0;
-
+//generates a 1ms "tick" and iterate over each display element sequentially
 localparam SEGMENTS = 6;
 localparam DVSR = 12000/(SEGMENTS);
 reg [22:0] ms_reg;
@@ -43,9 +35,15 @@ assign ms_tick = (ms_reg == DVSR) ? 1'b1 : 1'b0;
 assign d0_en = ms_tick;
 assign d0_next = (d0_en && d0_reg == (SEGMENTS-1)) ? 4'b0 : (d0_en)? d0_reg+1: d0_reg;
 
-
-// ------ Design implementation ------
-
+//on each clock cycle illuminate the appropriate digit and display the value at that index
+reg [3:0] hex_in;
+reg dp;
+wire [3:0] hex5;
+wire [3:0] hex4;
+wire [3:0] hex3;
+wire [3:0] hex2;
+wire [3:0] hex1;
+wire [3:0] hex0;
 always @* begin
 	case (d0_next)
 		3'b000:
@@ -90,11 +88,15 @@ end
 SEVEN_SEGMENT seven_segment(.sseg(sseg), .hex(hex_in), .dp(dp));
 
 
+//setup a simple spi slave 
 wire byteReceived;
 wire[7:0] receivedData;
 wire dataNeeded;
 reg[7:0] dataToSend;
-reg [2:0] spi_bytes_count = 0;
+SPI_slave spi_slave(CLK_12_MHZ, sck, mosi, miso, ssel, byteReceived, receivedData, dataNeeded, dataToSend);
+
+//simple state machine that expects the fist byte to be the digit to configure and the second byte to be the 
+//hex value to display... [0x01 0x0a] would display "a" in on the first digit
 parameter SPI_CMD_NONE = 3'h00;
 parameter SEGMENT_0 = 3'h01;
 parameter SEGMENT_1 = 3'h02;
@@ -102,9 +104,8 @@ parameter SEGMENT_2 = 3'h03;
 parameter SEGMENT_3 = 3'h04;
 parameter SEGMENT_4 = 3'h05;
 parameter SEGMENT_5 = 3'h06;
-
 reg [2:0] spi_cmd = SPI_CMD_NONE;
-SPI_slave spi_slave(CLK_12_MHZ, sck, mosi, miso, ssel, byteReceived, receivedData, dataNeeded, dataToSend);
+reg [2:0] spi_bytes_count = 0;
 
 always @(posedge CLK_12_MHZ) begin
 	if(byteReceived) begin		

@@ -7,6 +7,7 @@ Verilog-based project that exposes a 6-digit seven segment display that can be a
 ### Main Features ###
 ![](https://raw.githubusercontent.com/dretay/disp_hex_mux/master/IMG_3861.jpg)
 - Charlieplex'd 6 digit display for efficient pin use. 
+- Board includes a simple hex inverter with schmitt trigger to help with higher speed refresh rates. 
 - Each segment individually addressable. For example, here is how to setup a buspirate and use it to display abc123:
 
 ```
